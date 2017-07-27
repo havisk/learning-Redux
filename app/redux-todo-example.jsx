@@ -12,10 +12,25 @@ let stateDefault = {
 
 let reducer = (state = stateDefault, action) => {
     // state = state || {name: 'Anonymous'};
-    return state;
+    switch (action.type) {
+        case 'CHANGE_TEXT':
+            return {
+                ...state,
+                searchText: action.searchText
+            };
+        default:
+            return state;
+    }
 };
 
 let store = redux.createStore(reducer);
 
 let currentState = store.getState();
 console.log('currentState', currentState);
+
+store.dispatch({
+    type: 'CHANGE_TEXT',
+    searchText: 'run away'
+});
+
+console.log('searchText should be run away', store.getState());
