@@ -23,7 +23,15 @@ let reducer = (state = stateDefault, action) => {
     }
 };
 
-let store = redux.createStore(reducer);
+let store = redux.createStore(reducer, redux.compose (
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+));
+
+store.subscribe(() => {
+   let state = store.getState();
+
+   document.getElementById('app').innerHTML = state.searchText;
+});
 
 let currentState = store.getState();
 console.log('currentState', currentState);
@@ -33,4 +41,7 @@ store.dispatch({
     searchText: 'run away'
 });
 
-console.log('searchText should be run away', store.getState());
+store.dispatch({
+    type: 'CHANGE_TEXT',
+    searchText: "Im the King"
+});
