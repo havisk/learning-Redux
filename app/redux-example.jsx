@@ -4,17 +4,8 @@ let redux = require('redux');
 
 console.log('starting redux example');
 
-let stateDefault ={
-    name: 'Anonymous',
-    hobbies: [],
-    movies: []
-};
-let nextHobbyId = 1;
-let nextMovieId = 1;
-
-
-//individual reducers
-
+//Name reducer and action generators
+// ------------------------------
 let nameReducer = (state = 'Anonymous', action) => {
   switch (action.type) {
       case 'CHANGE_NAME':
@@ -24,6 +15,16 @@ let nameReducer = (state = 'Anonymous', action) => {
     }
 };
 
+let changeName = (name) => {
+    return {
+        type: 'CHANGE_NAME',
+        name
+    }
+};
+
+//Hobby reducer and action generators
+// ------------------------------
+let nextHobbyId = 1;
 let hobbiesReducer = (state =[], action) => {
     switch (action.type) {
         case 'ADD_HOBBY':
@@ -41,6 +42,24 @@ let hobbiesReducer = (state =[], action) => {
     }
 };
 
+let addHobby = (hobby) => {
+    return {
+        type: 'ADD_HOBBY',
+        hobby
+    }
+};
+
+let removeHobby = (id) => {
+    return {
+        type: 'REMOVE_HOBBY',
+        id
+    }
+};
+
+
+//Movie reducer and action generators
+// ------------------------------
+let nextMovieId = 1;
 let moviesReducer = (state = [], action) => {
     switch (action.type) {
         case 'ADD_MOVIE':
@@ -56,6 +75,21 @@ let moviesReducer = (state = [], action) => {
             return state.filter((movie) => movie.id !== action.id);
         default:
             return state;
+    }
+};
+
+let addMovie = (title, genre) => {
+    return {
+        type: 'ADD_MOVIE',
+        title,
+        genre
+    }
+};
+
+let removeMovie = (id) => {
+    return {
+        type: 'REMOVE_MOVIE',
+        id
     }
 };
 
@@ -83,53 +117,22 @@ let unsubscribe = store.subscribe(() => {
 let currentState = store.getState();
 console.log('currentState', currentState);
 
-store.dispatch(
-    {
-        type: 'CHANGE_NAME',
-        name: 'Kool'
-    });
+store.dispatch(changeName('Kool'));
 
-store.dispatch({
-    type: 'ADD_HOBBY',
-    hobby: 'making music'
-});
-store.dispatch({
-    type: 'ADD_HOBBY',
-    hobby: 'listening'
-});
+store.dispatch(addHobby('making music'));
 
-store.dispatch({
-    type: 'REMOVE_HOBBY',
-    id: 1
-});
+store.dispatch(addHobby('listening'));
 
+store.dispatch(removeHobby(1));
 
-store.dispatch({
-    type: 'CHANGE_NAME',
-    name: 'Namari'
-});
+store.dispatch(changeName('Namari'));
 
-store.dispatch({
-    type: 'ADD_MOVIE',
-    title: 'NWA',
-    genre: 'Biopic'
-});
+store.dispatch(addMovie('NWA', 'Biopic'));
 
-store.dispatch({
-    type: 'ADD_MOVIE',
-    title: 'Chips',
-    genre: 'Comedy'
-});
+store.dispatch(addMovie('Chips', 'Comedy'));
 
-store.dispatch({
-    type: 'ADD_MOVIE',
-    title: 'All Eyes on ME',
-    genre: 'Biopic'
-});
+store.dispatch(addMovie('All Eyes On Me', 'Biopic'));
 
-store.dispatch ({
-    type: 'REMOVE_MOVIE',
-    id: 1
-});
+store.dispatch (removeMovie(1));
 
 
